@@ -302,10 +302,6 @@ define([
     }
   };
 
-  SegmentsLayer.prototype.draw = function() {
-    this._layer.draw();
-  };
-
   SegmentsLayer.prototype.getHeight = function() {
     return this._layer.getHeight();
   };
