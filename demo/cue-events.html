@@ -418,21 +418,22 @@
           peaksInstance.segments.add({
             startTime: 5.5,
             endTime: 7.5,
-            editable: true,
+            editable: false,
             id: 'testsegment'
           });
 
           peaksInstance.segments.add({
-            startTime: 9.5,
-            endTime: 13.5,
+            startTime: 10.5,
+            endTime: 14.5,
             editable: false,
             id: 'testsegment2'
           });
 
-          peaksInstance.points.add({
-            time: 4.3,
-            editable: true,
-            id: 'testpoint'
+          peaksInstance.segments.add({
+            startTime: 17.5,
+            endTime: 23.0,
+            editable: false,
+            id: 'testsegment3'
           });
 
           peaksInstance.on('points.enter', function(point) {
@@ -441,10 +442,18 @@
 
           peaksInstance.on('segments.enter', function(segment) {
             console.log('segments.enter', segment,peaksInstance.player.getCurrentTime())
+            segment.update({
+              editable: true
+            });
           });
 
           peaksInstance.on('segments.exit', function(segment) {
             console.log('segments.exit', segment, peaksInstance.player.getCurrentTime())
+            setTimeout(() => {
+              segment.update({
+                editable: false
+              });
+            }, 0);
           });
         });
       })(peaks);

@@ -250,11 +250,14 @@ define([
 
   CueEmitter.prototype._updateActiveSegments = function(time) {
     var self = this;
-
     var activeSegments = self._peaks.segments.getSegmentsAtTime(time);
 
-    // Remove any segments no longer active.
+    if (activeSegments.length > 1) {
+      // We should have only one active segment at a time.
+      activeSegments.pop();
+    }
 
+    // Remove any segments no longer active.
     for (var id in self._activeSegments) {
       if (Utils.objectHasProperty(self._activeSegments, id)) {
         var segment = activeSegments.find(getSegmentIdComparator(id));
@@ -267,13 +270,15 @@ define([
     }
 
     // Add new active segments.
-
-    activeSegments.forEach(function(segment) {
-      if (!(segment.id in self._activeSegments)) {
-        self._activeSegments[segment.id] = segment;
-        self._peaks.emit('segments.enter', segment);
-      }
-    });
+    // We need to call this setTimeout to avoid wrong overriding.
+    setTimeout(function() {
+      activeSegments.forEach(function(segment) {
+        if (!(segment.id in self._activeSegments)) {
+          self._activeSegments[segment.id] = segment;
+          self._peaks.emit('segments.enter', segment);
+        }
+      });
+    }, 0);
   };
 
   var triggerUpdateOn = Array(
