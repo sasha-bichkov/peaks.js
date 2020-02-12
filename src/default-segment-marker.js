@@ -51,15 +51,17 @@ define([
     this._label.hide();
 
     // Handle - create with default y, the real value is set in fitToView().
-    this._handle = new Konva.Rect({
-      x:           handleX,
-      y:           0,
-      width:       handleWidth,
-      height:      handleHeight,
-      fill:        this._options.color,
-      stroke:      this._options.color,
-      strokeWidth: 1
-    });
+    if (this._options.segment.editable) {
+      this._handle = new Konva.Rect({
+        x:           handleX,
+        y:           0,
+        width:       handleWidth,
+        height:      handleHeight,
+        fill:        this._options.color,
+        stroke:      this._options.color,
+        strokeWidth: 1
+      });
+    }
 
     // Vertical Line - create with default y and points, the real values
     // are set in fitToView().
@@ -72,7 +74,10 @@ define([
 
     group.add(this._label);
     group.add(this._line);
-    group.add(this._handle);
+
+    if (this._handle) {
+      group.add(this._handle);
+    }
 
     this.fitToView();
 
@@ -100,26 +105,32 @@ define([
       });
     }
 
-    self._handle.on('mouseover touchstart', function() {
-      if (self._options.startMarker) {
-        self._label.setX(xPosition - self._label.getWidth());
-      }
+    if (self._handle) {
+      self._handle.on('mouseover touchstart', function() {
+        if (self._options.startMarker) {
+          self._label.setX(xPosition - self._label.getWidth());
+        }
 
-      self._label.show();
-      self._options.layer.draw();
-    });
+        self._label.show();
+        self._options.layer.draw();
+      });
 
-    self._handle.on('mouseout touchend', function() {
-      self._label.hide();
-      self._options.layer.draw();
-    });
+      self._handle.on('mouseout touchend', function() {
+        self._label.hide();
+        self._options.layer.draw();
+      });
+    }
   };
 
   DefaultSegmentMarker.prototype.fitToView = function() {
     var height = this._options.layer.getHeight();
 
     this._label.y(height / 2 - 5);
-    this._handle.y(height / 2 - 10.5);
+
+    if (this._handle) {
+      this._handle.y(height / 2 - 10.5);
+    }
+
     this._line.points([0.5, 0, 0.5, height]);
   };
 
