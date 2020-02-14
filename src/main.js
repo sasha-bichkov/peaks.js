@@ -183,6 +183,11 @@ define([
       randomizeSegmentColor: true,
 
       /**
+       * Block mouse clicks if a meta key is pressed
+       */
+      blockUpdatingOnMouseClickWithMetaKey: true,
+
+      /**
        * Height of the waveform canvases in pixels
        */
       height:                200,

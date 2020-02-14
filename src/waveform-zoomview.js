@@ -146,7 +146,7 @@ define([
         }
       },
 
-      onMouseUp: function(/* mousePosX */) {
+      onMouseUp: function(mousePosX, event) {
         // Set playhead position only on click release, when not dragging.
         if (!self._mouseDragHandler.isDragging()) {
           var mouseDownX = Math.floor(this.mouseDownX);
@@ -155,10 +155,14 @@ define([
 
           var time = self.pixelsToTime(pixelIndex);
 
-          self._updateWaveform(pixelIndex - mouseDownX);
-          self._playheadLayer.updatePlayheadTime(time);
+          if (!self._options.blockUpdatingOnMouseClickWithMetaKey) {
+            self._updateWaveform(pixelIndex - mouseDownX);
+            self._playheadLayer.updatePlayheadTime(time);
 
-          self._peaks.player.seek(time);
+            self._peaks.player.seek(time);
+          }
+
+          self._peaks.emit('zoomview.updateTime', time);
         }
       }
     });
