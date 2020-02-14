@@ -162,7 +162,7 @@ define([
             self._peaks.player.seek(time);
           }
 
-          self._peaks.emit('zoomview.updateTime', time);
+          self._peaks.emit('zoomview.updateTime', event, time);
         }
       }
     });

@@ -439,7 +439,7 @@
             id: 'testsegment3'
           });
 
-          peaksInstance.on('zoomview.updateTime', function(time) {
+          peaksInstance.on('zoomview.updateTime', function(event, time) {
             console.log('zoomview.updateTime', time);
           });
 
