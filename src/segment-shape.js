@@ -105,7 +105,7 @@ define([
       segment:      this._segment,
       draggable:    editable,
       startMarker:  true,
-      color:        this._peaks.options.segmentStartMarkerColor,
+      color:        editable ? this._peaks.options.activeSegmentStartMarkerColor : this._peaks.options.segmentStartMarkerColor,
       layer:        this._layer,
       view:         this._view.getName()
     });
@@ -127,7 +127,7 @@ define([
       segment:      this._segment,
       draggable:    editable,
       startMarker:  false,
-      color:        this._peaks.options.segmentEndMarkerColor,
+      color:        editable ? this._peaks.options.activeSegmentEndMarkerColor : this._peaks.options.segmentEndMarkerColor,
       layer:        this._layer,
       view:         this._view.getName()
     });
