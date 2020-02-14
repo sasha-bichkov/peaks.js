@@ -185,7 +185,7 @@ define([
       /**
        * Block mouse clicks if a meta key is pressed
        */
-      blockUpdatingOnMouseClickWithMetaKey: true,
+      blockUpdatingOnMouseClickWithMetaKey: false,
 
       /**
        * Height of the waveform canvases in pixels

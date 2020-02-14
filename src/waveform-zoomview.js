@@ -155,7 +155,7 @@ define([
 
           var time = self.pixelsToTime(pixelIndex);
 
-          if (!self._options.blockUpdatingOnMouseClickWithMetaKey) {
+          if (!(self._options.blockUpdatingOnMouseClickWithMetaKey && event.metaKey)) {
             self._updateWaveform(pixelIndex - mouseDownX);
             self._playheadLayer.updatePlayheadTime(time);
 
