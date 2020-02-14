@@ -92,6 +92,10 @@ define([
     // The pixel offset of the current frame being displayed
     self._frameOffset = 0;
 
+    container.oncontextmenu = function() {
+      return false;
+    };
+
     self._stage = new Konva.Stage({
       container: container,
       width: self._width,
