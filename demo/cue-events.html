@@ -438,6 +438,10 @@
             id: 'testsegment3'
           });
 
+          peaksInstance.on('zoomview.click', function(event) {
+            console.log('zoomview.click', event);
+          });
+
           peaksInstance.on('points.enter', function(point) {
             console.log('points.enter', point, peaksInstance.player.getCurrentTime())
           });

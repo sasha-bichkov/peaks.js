@@ -159,6 +159,10 @@ define([
       }
     });
 
+    this._stage.on('click', function(event) {
+      self._peaks.emit('zoomview.click', event);
+    });
+
     this._stage.on('dblclick', function(event) {
       var mousePosX = event.evt.layerX;
 
