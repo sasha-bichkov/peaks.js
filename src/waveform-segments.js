@@ -133,6 +133,7 @@ define([
       options.endTime,
       options.labelText,
       options.color || this._getSegmentColor(),
+      options.opacity || 1,
       options.editable || false
     );
 

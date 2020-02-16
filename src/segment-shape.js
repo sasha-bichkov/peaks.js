@@ -8,10 +8,10 @@
 
 define([
   './segment-marker',
-  './waveform-shape'
+  './waveform-shape-rectangle'
 ], function(
   SegmentMarker,
-  WaveformShape) {
+  WaveformShapeRectangle) {
   'use strict';
 
   /**
@@ -31,13 +31,21 @@ define([
     this._peaks         = peaks;
     this._layer         = layer;
     this._view          = view;
-    this._waveformShape = null;
+    // this._waveformShape = null;
     this._label         = null;
     this._startMarker   = null;
     this._endMarker     = null;
+    this._waveformShapeRectangle = null;
 
-    this._waveformShape = new WaveformShape({
+    // this._waveformShape = new WaveformShape({
+    //   color:   segment.color,
+    //   view:    view,
+    //   segment: segment
+    // });
+
+    this._waveformShapeRectangle = new WaveformShapeRectangle({
       color:   segment.color,
+      opacity: segment.opacity,
       view:    view,
       segment: segment
     });
@@ -48,9 +56,9 @@ define([
 
     // Set up event handlers to show/hide the segment label text when the user
     // hovers the mouse over the segment.
-    this._waveformShape.on('mouseenter', this._onMouseEnter);
-    this._waveformShape.on('mouseleave', this._onMouseLeave);
-    this._waveformShape.on('click', this._onClick);
+    this._waveformShapeRectangle.on('mouseenter', this._onMouseEnter);
+    this._waveformShapeRectangle.on('mouseleave', this._onMouseLeave);
+    this._waveformShapeRectangle.on('click', this._onClick);
 
     // Event handlers for markers
     this._onSegmentHandleDrag      = this._onSegmentHandleDrag.bind(this);
@@ -83,7 +91,7 @@ define([
   };
 
   SegmentShape.prototype.addToLayer = function(layer) {
-    layer.add(this._waveformShape);
+    layer.add(this._waveformShapeRectangle);
 
     if (this._label) {
       layer.add(this._label);
@@ -233,7 +241,7 @@ define([
   };
 
   SegmentShape.prototype.destroy = function() {
-    this._waveformShape.destroy();
+    this._waveformShapeRectangle.destroy();
 
     if (this._label) {
       this._label.destroy();

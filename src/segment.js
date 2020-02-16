@@ -37,6 +37,11 @@ define([
       throw new RangeError('peaks.segments.' + context + ': endTime should be greater than startTime');
     }
 
+    if (options.opacity < 0 || options.opacity > 1) {
+      // eslint-disable-next-line max-len
+      throw new RangeError('peaks.segments.' + context + ': opacity should be between 0 and 1');
+    }
+
     if (Utils.isNullOrUndefined(options.labelText)) {
       // Set default label text
       options.labelText = '';
@@ -58,16 +63,18 @@ define([
    * @param {Number} endTime Segment end time, in seconds.
    * @param {String} labelText Segment label text.
    * @param {String} color Segment waveform color.
+   * @param {Number} opacity Segment waveform opacity.
    * @param {Boolean} editable If <code>true</code> the segment start and
    *   end times can be adjusted via the user interface.
    */
 
-  function Segment(peaks, id, startTime, endTime, labelText, color, editable) {
+  function Segment(peaks, id, startTime, endTime, labelText, color, opacity, editable) {
     var opts = {
       startTime: startTime,
       endTime:   endTime,
       labelText: labelText,
       color:     color,
+      opacity:   opacity,
       editable:  editable
     };
 
@@ -79,6 +86,7 @@ define([
     this._endTime   = opts.endTime;
     this._labelText = opts.labelText;
     this._color     = opts.color;
+    this._opacity   = opts.opacity;
     this._editable  = opts.editable;
   }
 
@@ -121,6 +129,12 @@ define([
         return this._color;
       }
     },
+    opacity: {
+      enumerable: true,
+      get: function() {
+        return this._opacity;
+      }
+    },
     editable: {
       enumerable: true,
       get: function() {
@@ -135,6 +149,7 @@ define([
       endTime:   this.endTime,
       labelText: this.labelText,
       color:     this.color,
+      opacity:   this.opacity,
       editable:  this.editable
     };
 
@@ -146,6 +161,7 @@ define([
     this._endTime   = opts.endTime;
     this._labelText = opts.labelText;
     this._color     = opts.color;
+    this._opacity   = opts.opacity;
     this._editable  = opts.editable;
 
     this._peaks.emit('segments.update', this);

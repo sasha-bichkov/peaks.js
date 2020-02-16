@@ -1,6 +1,6 @@
 {
   "name": "peaksjsfork",
-  "version": "0.24.2",
+  "version": "0.25.0",
   "description": "JavaScript UI component for displaying audio waveforms",
   "main": "./peaks.js",
   "types": "./peaks.js.d.ts",
