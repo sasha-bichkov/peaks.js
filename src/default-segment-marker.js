@@ -51,7 +51,7 @@ define([
     this._label.hide();
 
     // Handle - create with default y, the real value is set in fitToView().
-    if (this._options.segment.editable) {
+    if (this._options.segment.editable && this._options.segment.showMarkers) {
       this._handle = new Konva.Rect({
         x:           handleX,
         y:           0,
@@ -69,7 +69,15 @@ define([
       x:           0,
       y:           0,
       stroke:      this._options.color,
-      strokeWidth: 1
+      strokeWidth: 2
+    });
+
+    this._line.on('mouseover touchstart', function(e) {
+      e.evt.target.style.cursor = 'ew-resize';
+    });
+
+    this._line.on('mouseout touchend', function(e) {
+      e.evt.target.style.cursor = 'default';
     });
 
     group.add(this._label);

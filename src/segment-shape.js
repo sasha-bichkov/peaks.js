@@ -115,7 +115,8 @@ define([
       startMarker:  true,
       color:        editable ? this._peaks.options.activeSegmentStartMarkerColor : this._peaks.options.segmentStartMarkerColor,
       layer:        this._layer,
-      view:         this._view.getName()
+      view:         this._view.getName(),
+      showMarkers:  this._peaks.options.showMarkers
     });
 
     if (startMarker) {
@@ -127,7 +128,8 @@ define([
         marker:       startMarker,
         onDrag:       this._onSegmentHandleDrag,
         onDragStart:  this._onSegmentHandleDragStart,
-        onDragEnd:    this._onSegmentHandleDragEnd
+        onDragEnd:    this._onSegmentHandleDragEnd,
+        showMarkers:  this._peaks.options.showMarkers
       });
     }
 
@@ -137,7 +139,8 @@ define([
       startMarker:  false,
       color:        editable ? this._peaks.options.activeSegmentEndMarkerColor : this._peaks.options.segmentEndMarkerColor,
       layer:        this._layer,
-      view:         this._view.getName()
+      view:         this._view.getName(),
+      showMarkers:  this._peaks.options.showMarkers
     });
 
     if (endMarker) {
@@ -149,7 +152,8 @@ define([
         marker:       endMarker,
         onDrag:       this._onSegmentHandleDrag,
         onDragStart:  this._onSegmentHandleDragStart,
-        onDragEnd:    this._onSegmentHandleDragEnd
+        onDragEnd:    this._onSegmentHandleDragEnd,
+        showMarkers:  this._peaks.options.showMarkers
       });
     }
   };
