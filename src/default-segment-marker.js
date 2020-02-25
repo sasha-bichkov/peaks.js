@@ -32,7 +32,7 @@ define([
     var handleHeight = 20;
     var handleX      = -(handleWidth / 2) + 0.5; // Place in the middle of the marker
 
-    var xPosition = this._options.startMarker ? -24 : 24;
+    var xPosition = this._options.startMarker ? -8 : 8;
 
     var time = this._options.startMarker ? this._options.segment.startTime :
                                            this._options.segment.endTime;
@@ -40,10 +40,11 @@ define([
     // Label - create with default y, the real value is set in fitToView().
     this._label = new Konva.Text({
       x:          xPosition,
-      y:          0,
+      y:          13,
       text:       Utils.formatTime(time, false),
       fontSize:   10,
       fontFamily: 'sans-serif',
+      fontStyle:  'bold',
       fill:       '#000',
       textAlign:  'center'
     });
@@ -51,9 +52,11 @@ define([
     this._label.hide();
 
     // Handle - create with default y, the real value is set in fitToView().
-    if (this._options.segment.editable && this._options.segment.showMarkers) {
+    if (this._options.segment.editable && this._options.showMarkers) {
+      var offset = this._options.startMarker ? 0 : -10;
+
       this._handle = new Konva.Rect({
-        x:           handleX,
+        x:           offset,
         y:           0,
         width:       handleWidth,
         height:      handleHeight,
@@ -95,7 +98,7 @@ define([
   DefaultSegmentMarker.prototype.bindEventHandlers = function(group) {
     var self = this;
 
-    var xPosition = self._options.startMarker ? -24 : 24;
+    var xPosition = self._options.startMarker ? -8 : 8;
 
     if (self._options.draggable) {
       group.on('dragstart', function() {
@@ -114,7 +117,9 @@ define([
     }
 
     if (self._handle) {
-      self._handle.on('mouseover touchstart', function() {
+      self._handle.on('mouseover touchstart', function(e) {
+        e.evt.target.style.cursor = 'ew-resize';
+
         if (self._options.startMarker) {
           self._label.setX(xPosition - self._label.getWidth());
         }
@@ -123,7 +128,9 @@ define([
         self._options.layer.draw();
       });
 
-      self._handle.on('mouseout touchend', function() {
+      self._handle.on('mouseout touchend', function(e) {
+        e.evt.target.style.cursor = 'ew-resize';
+
         self._label.hide();
         self._options.layer.draw();
       });
@@ -133,10 +140,10 @@ define([
   DefaultSegmentMarker.prototype.fitToView = function() {
     var height = this._options.layer.getHeight();
 
-    this._label.y(height / 2 - 5);
+    // this._label.y(height / 2 - 5);
 
     if (this._handle) {
-      this._handle.y(height / 2 - 10.5);
+      this._handle.y(0);
     }
 
     this._line.points([0.5, 0, 0.5, height]);

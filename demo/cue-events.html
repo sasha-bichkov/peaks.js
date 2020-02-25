@@ -332,12 +332,13 @@
           },
           keyboard: true,
           pointMarkerColor: '#006eb0',
-          showPlayheadTime: true,
+          showMarkers: true,
           emitCueEvents: true,
-          showMarkers: false,
+          showPlayheadTime: true,
           activeSegmentStartMarkerColor: '#0000ff',
           activeSegmentEndMarkerColor: '#00ff00',
-          blockUpdatingOnMouseClickWithMetaKey: true
+          blockUpdatingOnMouseClickWithMetaKey: true,
+          playheadTextColor: '#000'
         };
 
         Peaks.init(options, function(err, peaksInstance) {
@@ -422,7 +423,7 @@
           peaksInstance.segments.add({
             startTime: 5.5,
             endTime: 7.5,
-            editable: false,
+            editable: true,
             color: '#522ab329',
             id: 'testsegment'
           });
@@ -430,7 +431,7 @@
           peaksInstance.segments.add({
             startTime: 10.5,
             endTime: 14.5,
-            editable: false,
+            editable: true,
             color: '#522ab329',
             id: 'testsegment2'
           });
@@ -438,7 +439,7 @@
           peaksInstance.segments.add({
             startTime: 2.5,
             endTime: 4.0,
-            editable: false,
+            editable: true,
             color: '#522ab329',
             id: 'testsegment3'
           });

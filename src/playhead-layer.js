@@ -99,7 +99,7 @@ define([
     this._playheadLine.points([0.5, 0, 0.5, height]);
 
     if (this._playheadText) {
-      this._playheadText.y(12);
+      this._playheadText.y(30);
     }
   };
 
@@ -129,7 +129,7 @@ define([
   PlayheadLayer.prototype._createPlayheadText = function(color) {
     // Create with default y, the real value is set in fitToView().
     this._playheadText = new Konva.Text({
-      x: 2,
+      x: 3,
       y: 0,
       text: '00:00:00',
       fontSize: 11,
