@@ -465,6 +465,7 @@
 
           peaksInstance.on('segments.exit', function(segment) {
             console.log('segments.exit', segment, peaksInstance.player.getCurrentTime())
+            // it's added due to an infinity updating (a bug).
             setTimeout(() => {
               segment.update({
                 editable: false
