@@ -10,24 +10,6 @@ define(['./utils', 'konva'], function(Utils, Konva) {
   'use strict';
 
   /**
-   * Scales the waveform data for drawing on a canvas context.
-   *
-   * @param {Number} amplitude The waveform data point amplitude.
-   * @param {Number} height The height of the waveform, in pixels.
-   * @param {Number} scale Amplitude scaling factor.
-   * @returns {Number} The scaled waveform data point.
-   */
-
-  function scaleY(amplitude, height, scale) {
-    var range = 256;
-    var offset = 128;
-
-    var scaledAmplitude = (amplitude * scale + offset) * height / range;
-
-    return height - Utils.clamp(height - scaledAmplitude, 0, height);
-  }
-
-  /**
    * Waveform shape options.
    *
    * @typedef {Object} WaveformShapeRectangleOptions
@@ -100,6 +82,7 @@ define(['./utils', 'konva'], function(Utils, Konva) {
 
   WaveformShapeRectangle.prototype._drawWaveform = function(context, waveformData,
     frameOffset, startPixels, endPixels, width, height) {
+
     if (startPixels < frameOffset) {
       startPixels = frameOffset;
     }
@@ -115,10 +98,10 @@ define(['./utils', 'konva'], function(Utils, Konva) {
     }
 
     var channels = waveformData.channels;
-
     var waveformTop = 0;
     var waveformHeight = Math.floor(height / channels);
 
+    context.beginPath();
     context.rect(startPixels - frameOffset, waveformTop, endPixels - startPixels, waveformHeight);
     context.closePath();
     context.fillShape(this);
