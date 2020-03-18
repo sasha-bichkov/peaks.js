@@ -32,10 +32,10 @@ define([
       throw new RangeError('peaks.segments.' + context + ': endTime should not be negative');
     }
 
-    if (options.endTime <= options.startTime) {
-      // eslint-disable-next-line max-len
-      throw new RangeError('peaks.segments.' + context + ': endTime should be greater than startTime');
-    }
+    // if (options.endTime <= options.startTime) {
+    //   // eslint-disable-next-line max-len
+    //   throw new RangeError('peaks.segments.' + context + ': endTime should be greater than startTime');
+    // }
 
     if (options.opacity < 0 || options.opacity > 1) {
       // eslint-disable-next-line max-len
@@ -152,6 +152,11 @@ define([
       opacity:   this.opacity,
       editable:  this.editable
     };
+
+    // 0.035 is the best value to make the segment selectable
+    if (this.endTime - this.startTime < 0.035) {
+      opts.endTime = this.startTime + 0.035;
+    }
 
     Utils.extend(opts, options);
 
