@@ -206,7 +206,11 @@ define([
       var segment = self._createSegment(segmentOptions);
 
       if (Utils.objectHasProperty(self._segmentsById, segment.id)) {
-        throw new Error('peaks.segments.add(): duplicate id');
+        var seg = Object.values(self._segmentsById)[0];
+
+        throw new Error('peaks.segments.add(): duplicate id. \n\n segment I = ' +
+          JSON.stringify({ id: seg.id, startTime: seg.startTime, endTime: seg.endTime }) +
+          ' segment II = ' + JSON.stringify({ id: segment.id, startTime: segment.startTime, endTime: segment.endTime }));
       }
 
       return segment;
