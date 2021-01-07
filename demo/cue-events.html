@@ -324,7 +324,9 @@
         };
 
         var options = {
-          container: document.getElementById('waveform-container'),
+          containers: {
+            zoomview: document.getElementById('waveform-container')
+          },
           mediaElement: document.getElementById('audio'),
           dataUri: {
             arraybuffer: 'TOL_6min_720p_download.dat',

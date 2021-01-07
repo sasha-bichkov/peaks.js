@@ -124,8 +124,8 @@ define([
     this._layer.draw();
   };
 
-  SegmentsLayer.prototype._onSegmentsDragged = function(segment) {
-    this._updateSegment(segment);
+  SegmentsLayer.prototype._onSegmentsDragged = function(segment, marker) {
+    this._updateSegments(segment, marker);
     this._layer.draw();
   };
 
@@ -255,6 +255,67 @@ define([
     return count;
   };
 
+  SegmentsLayer.prototype._getVisibleSegments = function() {
+    var frameOffset = this._view.getFrameOffset();
+    var width = this._view.getWidth();
+    var frameStartTime = this._view.pixelsToTime(frameOffset);
+    var frameEndTime   = this._view.pixelsToTime(frameOffset + width);
+
+    var visibleSegments = [];
+
+    for (var segmentId in this._segmentShapes) {
+      if (Utils.objectHasProperty(this._segmentShapes, segmentId)) {
+        var segment = this._segmentShapes[segmentId]._segment;
+
+        if (segment.isVisible(frameStartTime, frameEndTime)) {
+          visibleSegments.push(segment);
+        }
+      }
+    }
+
+    return visibleSegments;
+  };
+
+  SegmentsLayer.prototype._updateSegments = function(segment, isStartMarker) {
+    var overlappedSegments = this._getOverlappedSegments();
+    var segmentToPushAutomatically = overlappedSegments.find(function(overlappedSegment) {
+      return overlappedSegment.id !== segment.id;
+    });
+
+    if (segmentToPushAutomatically) {
+      if (isStartMarker) {
+        segmentToPushAutomatically._endTime = segment.startTime - 0.02;
+        this._updateSegment(segmentToPushAutomatically);
+      }
+
+      if (!isStartMarker) {
+        segmentToPushAutomatically._startTime = segment.endTime + 0.02;
+        this._updateSegment(segmentToPushAutomatically);
+      }
+    }
+
+    this._updateSegment(segment);
+
+    return segment;
+  };
+
+  SegmentsLayer.prototype._getOverlappedSegments = function() {
+    var self = this;
+    var segments = this._getVisibleSegments();
+
+    return segments.reduce(function(result, segment) {
+      segments.forEach(function(segment2) {
+        if (self._segmentsOverlapped(segment, segment2)) {
+          if (!result.includes(segment2.id)) {
+            result.push(segment2);
+          }
+        }
+      });
+
+      return result;
+    }, []);
+  };
+
   /**
    * Removes the given segment from the view.
    *
@@ -282,6 +343,13 @@ define([
 
   SegmentsLayer.prototype.draw = function() {
     this._layer.draw();
+  };
+
+  SegmentsLayer.prototype._segmentsOverlapped = function(segment1, segment2) {
+    var endsLater = (segment1.startTime < segment2.startTime) && (segment1.endTime > segment2.startTime);
+    var startsEarlier = (segment1.startTime > segment2.startTime) && (segment1.startTime < segment2.endTime);
+
+    return endsLater || startsEarlier;
   };
 
   SegmentsLayer.prototype.destroy = function() {
