@@ -282,40 +282,51 @@ define([
       return overlappedSegment.id !== segment.id;
     });
 
-    var newStartTime = segment.endTime + 0.02;
-    var newEndTime = segment.startTime - 0.02;
+    var canPush = true;
     var canPushToTheLeft = true;
     var canPushToTheRight = true;
-    var canPush = true;
+    var newStartTime = segment.endTime + 0.02;
+    var newEndTime = segment.startTime - 0.02;
 
     if (segmentToPushAutomatically) {
       canPushToTheLeft = newEndTime - segmentToPushAutomatically._startTime > 0.5;
       canPushToTheRight = segmentToPushAutomatically._endTime - newStartTime > 0.5;
       canPush = canPushToTheLeft || canPushToTheRight;
 
-      if (isStartMarker && canPushToTheLeft) {
-        segment._canPushToTheLeft = true;
-        segmentToPushAutomatically._endTime = newEndTime;
-        this._updateSegment(segmentToPushAutomatically);
-      }
-      else {
-        segment._canPushToTheLeft = false;
-        this._updateSegment(segment);
+      var limitPositionX = this._view.timeToPixels(segmentToPushAutomatically._startTime + 0.5);
+      var limitPositionRightX = this._view.timeToPixels(segmentToPushAutomatically._endTime - 0.5);
+
+      segment._limitPositionX = limitPositionX;
+      segment._limitPositionRightX = limitPositionRightX;
+
+      if (isStartMarker) {
+        if (canPushToTheLeft) {
+          segment._canPushToTheLeft = true;
+          segmentToPushAutomatically._endTime = newEndTime;
+          this._updateSegment(segmentToPushAutomatically);
+        }
+        else {
+          segment._canPushToTheLeft = false;
+          this._updateSegment(segment);
+        }
       }
 
-      if (!isStartMarker && canPushToTheRight) {
-        segmentToPushAutomatically._startTime = newStartTime;
-        segment._canPushToTheRight = true;
-        this._updateSegment(segmentToPushAutomatically);
-      }
-      else {
-        segment._canPushToTheRight = false;
-        this._updateSegment(segment);
+      if (!isStartMarker) {
+        if (canPushToTheRight) {
+          segmentToPushAutomatically._startTime = newStartTime;
+          segment._canPushToTheRight = true;
+          this._updateSegment(segmentToPushAutomatically);
+        }
+        else {
+          segment._canPushToTheRight = false;
+          this._updateSegment(segment);
+        }
       }
     }
     else {
       segment._canPushToTheLeft = true;
       segment._canPushToTheRight = true;
+      this._updateSegment(segment);
     }
 
     if (canPush) {

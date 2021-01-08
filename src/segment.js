@@ -90,6 +90,7 @@ define([
     this._editable  = opts.editable;
     this._canPushToTheRight = true;
     this._canPushToTheLeft = true;
+    this.limitPositionX = null;
   }
 
   Object.defineProperties(Segment.prototype, {

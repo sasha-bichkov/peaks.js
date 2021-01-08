@@ -82,37 +82,31 @@ define([
     var marker;
     var limit;
 
-    if (this._startMarker && this._segment._canPushToTheLeft) {
-      marker = this._segmentShape.getEndMarker();
-      limit  = marker.getX() - marker.getWidth();
+    if (this._startMarker) {
+      if (this._segment._canPushToTheLeft) {
+        marker = this._segmentShape.getEndMarker();
+        limit  = marker.getX() - marker.getWidth();
 
-      if (pos.x > limit) {
-        pos.x = limit;
+        if (pos.x > limit) {
+          pos.x = limit;
+        }
       }
-    }
-    else {
-      marker = this._segmentShape.getStartMarker();
-      limit  = marker.getX() + marker.getWidth();
-
-      if (pos.x < limit) {
-        pos.x = limit;
+      else if (pos.x <= this._segment._limitPositionX) {
+        pos.x = this._segment._limitPositionX;
       }
     }
 
-    if (!this._startMarker && this._segment._canPushToTheRight) {
-      marker = this._segmentShape.getStartMarker();
-      limit  = marker.getX() + marker.getWidth();
+    if (!this._startMarker) {
+      if (this._segment._canPushToTheRight) {
+        marker = this._segmentShape.getStartMarker();
+        limit  = marker.getX() + marker.getWidth();
 
-      if (pos.x < limit) {
-        pos.x = limit;
+        if (pos.x < limit) {
+          pos.x = limit;
+        }
       }
-    }
-    else {
-      marker = this._segmentShape.getEndMarker();
-      limit  = marker.getX() + marker.getWidth();
-
-      if (pos.x > limit) {
-        pos.x = limit;
+      else if (pos.x >= this._segment._limitPositionRightX) {
+        pos.x = this._segment._limitPositionRightX;
       }
     }
 
