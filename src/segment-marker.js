@@ -82,7 +82,7 @@ define([
     var marker;
     var limit;
 
-    if (this._startMarker) {
+    if (this._startMarker && this._segment._canPushToTheLeft) {
       marker = this._segmentShape.getEndMarker();
       limit  = marker.getX() - marker.getWidth();
 
@@ -95,6 +95,23 @@ define([
       limit  = marker.getX() + marker.getWidth();
 
       if (pos.x < limit) {
+        pos.x = limit;
+      }
+    }
+
+    if (!this._startMarker && this._segment._canPushToTheRight) {
+      marker = this._segmentShape.getStartMarker();
+      limit  = marker.getX() + marker.getWidth();
+
+      if (pos.x < limit) {
+        pos.x = limit;
+      }
+    }
+    else {
+      marker = this._segmentShape.getEndMarker();
+      limit  = marker.getX() + marker.getWidth();
+
+      if (pos.x > limit) {
         pos.x = limit;
       }
     }

@@ -88,6 +88,8 @@ define([
     this._color     = opts.color;
     this._opacity   = opts.opacity;
     this._editable  = opts.editable;
+    this._canPushToTheRight = true;
+    this._canPushToTheLeft = true;
   }
 
   Object.defineProperties(Segment.prototype, {
